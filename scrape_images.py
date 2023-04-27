@@ -26,6 +26,7 @@ for style_number in style_numbers:
         missing_numbers.append(style_number)
 
 html_head = """<html style="font-family: system-ui;background-color: lavender">
+<head><title>Style Number Handbook</title></head>
 <h1 style="text-align: center;margin-block:0">Welcome Alicia!</h1>
 <p style="text-align: center;margin-block:0">...to your new style number handbook</p>
 <table style="margin:auto;margin-top:16px;border-collapse: collapse;border: 1px solid black;">
