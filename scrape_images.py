@@ -3,6 +3,7 @@
 import requests
 import re
 import webbrowser
+import os
 
 with open("./style_numbers.txt", "r") as input_file:
     contents = input_file.read()
@@ -29,6 +30,11 @@ html_head = """<html style="font-family: system-ui;background-color: lavender">
 <head><title>Style Number Handbook</title></head>
 <h1 style="text-align: center;margin-block:0">Welcome Alicia!</h1>
 <p style="text-align: center;margin-block:0">...to your new style number handbook</p>
+"""
+
+html_missing_numbers = f'<p style="background-color: ivory;padding: 8px;">Could not find images for: {", ".join(missing_numbers)}</p>' if len(missing_numbers) > 0 else ""
+
+html_table_head = """
 <table style="margin:auto;margin-top:16px;border-collapse: collapse;border: 1px solid black;">
 <tbody>
 <tr>
@@ -37,24 +43,29 @@ html_head = """<html style="font-family: system-ui;background-color: lavender">
 </tr>
 """  
 
-html_contents = "\n".join(
+html_table_contents = "\n".join(
     [
         f'<tr><td style="text-align: center;font-weight: 700;border: 1px solid black;">{number}</td><td style="padding: 16px;border: 1px solid black;"><img src={url[0]}></img></td></tr>' for number, url in output.items()
     ]
 )
 
-html_tail = """</tbody>
+html_table_tail = """</tbody>
 </table>
+"""
+
+html_tail = """
 </body>
 </html>
 """
 
 
-html = html_head + html_contents + html_tail
+html = html_head + html_missing_numbers + html_table_head + html_table_contents + html_table_tail + html_tail
 
 with open('style_number_urls.html', 'w') as f:
     f.write(html)
 
 print("Successfully generated an style_number_urls.html")
 print(f"Missing images for: {missing_numbers}")
-webbrowser.open('style_number_urls.html')
+filepath = os.getcwd()
+file_uri = 'file:///' + filepath + '/style_number_urls.html'
+webbrowser.get().open(file_uri)
