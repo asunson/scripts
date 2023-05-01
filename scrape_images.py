@@ -9,6 +9,7 @@ with open("./style_numbers.txt", "r") as input_file:
     contents = input_file.read()
 
 style_numbers = contents.split("\n")
+style_numbers = [number.lower() for number in style_numbers]
 img_pattern = re.compile('<img [^>]*src="([^"]+)')
 
 output = {}
