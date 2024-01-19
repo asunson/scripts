@@ -4,6 +4,9 @@ import requests
 import re
 import webbrowser
 import os
+import time
+
+headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36", "Cookie": ""}
 
 with open("./style_numbers.txt", "r") as input_file:
     contents = input_file.read()
@@ -16,16 +19,17 @@ output = {}
 missing_numbers = []
 for style_number in style_numbers:
     print(f"Looking for image for {style_number}")
-    r = requests.get(f"https://www.dkny.com/catalogsearch/result/?q={style_number}")
+    r = requests.get(f"https://www.dkny.com/catalogsearch/result/?q={style_number}", headers=headers)
     raw_html = r.text
     images = img_pattern.findall(raw_html)
-    matches = [i for i in images if style_number in i]
+    matches = [i.split("?")[0] for i in images if style_number in i]
     if len(matches) > 0:
         print(f"Found a url for {style_number}!")
         output[style_number] = matches
     else:
         print(f"-----UH OH----- Could not find an image for {style_number}")
         missing_numbers.append(style_number)
+    time.sleep(1)
 
 html_head = """<html style="font-family: system-ui;background-color: lavender">
 <head><title>Style Number Handbook</title></head>
